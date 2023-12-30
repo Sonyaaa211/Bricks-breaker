@@ -77,7 +77,7 @@ public class FlockAlbility : MonoBehaviour
         }
         else
         {
-            targetSpeed = maxVelocity * (dist / slowRadius);
+            targetSpeed = maxVelocity * (dist / slowRadius) /10;
         }
 
         /* Give targetVelocity the correct speed */
@@ -104,8 +104,11 @@ public class FlockAlbility : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 accel = Vector3.zero;
-        accel += Arrive(parentTransform.position);
+        if(parentTransform != null)
+        {
+            accel += Arrive(parentTransform.position);
 
-        Steer(accel);
+            Steer(accel);
+        }
     }
 }
