@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NomalEnemyAttack : MonoBehaviour
@@ -20,9 +21,8 @@ public class NomalEnemyAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((transform.position - player.transform.position).magnitude < 15)
+        if (Vector3.Distance(transform.position, player.transform.position) < 25)
         {
-            transform.LookAt(player.transform);
             if (shootable)
             {
                 shootable = false;
@@ -33,7 +33,7 @@ public class NomalEnemyAttack : MonoBehaviour
 
     IEnumerator Shoot()
     {
-        GameObject bullet = Instantiate(bulletPrefabs, attackPosition);
+        GameObject bullet = Instantiate(bulletPrefabs, attackPosition.position, Quaternion.identity);
         bullet.transform.SetParent(null);
         bullet.GetComponent<Rigidbody>().AddForce((attackPosition.position - transform.position).normalized * 30, ForceMode.Impulse);
         yield return new WaitForSeconds(attackCooldown);

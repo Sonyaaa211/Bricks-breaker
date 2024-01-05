@@ -16,6 +16,7 @@ namespace UnityMovementAI
 
         [Header("Arrive")]
 
+        public float arriveMaxAcceleration = 3.5f;
         /// <summary>
         /// The radius from the target that means we are close enough and have arrived
         /// </summary>

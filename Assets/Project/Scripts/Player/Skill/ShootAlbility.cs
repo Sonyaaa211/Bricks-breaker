@@ -17,10 +17,7 @@ public class ShootAlbility : MonoBehaviour
     }
     private void Update()
     {
-        if(targetPos != null && shootCube != null)
-        {
-            Debug.DrawLine(shootCube.transform.position, targetPos, Color.cyan, 0f, false);
-        }
+
     }
     public void Shoot()
     {
@@ -31,19 +28,22 @@ public class ShootAlbility : MonoBehaviour
             targetPos = raycastHit.point;
         }
         float min = 99;
-        
-        for(int i = 0; i < playerController.cubes.Count; i++)
+        if(playerController.cubes.Count > 0)
         {
-            float distance = (targetPos - playerController.cubes[i].transform.position).magnitude;
-            if (min > distance)
+            for (int i = 0; i < playerController.cubes.Count; i++)
             {
-                min = distance;
-                shootCube = playerController.cubes[i];
+                float distance = (targetPos - playerController.cubes[i].transform.position).magnitude;
+                if (min > distance)
+                {
+                    min = distance;
+                    shootCube = playerController.cubes[i];
+                }
             }
+            FlockAlbility flockAlbility = shootCube.GetComponent<FlockAlbility>();
+            flockAlbility.parentTransform.GetComponent<Child>().Rearange();
+            flockAlbility.parentTransform = null;
+            playerController.cubes.Remove(shootCube);
+            shootCube.GetComponent<Rigidbody>().AddForce((targetPos - shootCube.transform.position).normalized * 30, ForceMode.Impulse);
         }
-        FlockAlbility flockAlbility = shootCube.GetComponent<FlockAlbility>();
-        flockAlbility.parentTransform = null;
-        playerController.cubes.Remove(shootCube);
-        shootCube.GetComponent<Rigidbody>().AddForce((targetPos - shootCube.transform.position).normalized * 30, ForceMode.Impulse);
     }
 }
